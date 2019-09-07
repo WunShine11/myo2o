@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>商品列表</title>
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+</head>
+<body>
+<!-- 搜索条件开始 -->
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>查询条件</legend>
+</fieldset>
+
+<form th:action="@{/auth/product/selectiveProduct}" class="layui-form" method="post" id="queryForm">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">月份</label>
+            <div class="layui-input-inline">
+                <input type="text" name="id" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">开始时间:</label>
+            <div class="layui-input-inline">
+                <input type="text" name="startTime" id="startTime" readonly="readonly" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">结束时间:</label>
+            <div class="layui-input-inline">
+                <input type="text" name="endTime" id="endTime" readonly="readonly" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="layui-form-item" style="text-align: center;">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn layui-btn-normal layui-btn-sm layui-icon layui-icon-search"
+                    id="doSearch">查询
+            </button>
+            <button type="reset" class="layui-btn layui-btn-warm layui-btn-sm layui-icon layui-icon-refresh">重置</button>
+        </div>
+    </div>
+</form>
+
+<!-- 搜索条件结束 -->
+
+<script th:src="@{/static/layui/layui.js}"></script>
+<script type="text/javascript">
+    layui.use(['jquery', 'layer', 'form', 'table', 'laydate','upload'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var laydate = layui.laydate;
+        var upload = layui.upload;
+        //绑定时间选择器
+        laydate.render({
+            elem: '#startTime'
+        });
+        laydate.render({
+            elem: '#endTime'
+        })
+        //条件查询
+        $("#doSearch").click(function () {
+
+            var param = $("#queryForm").serialize();
+            alert(param)
+            tableIns.reload({
+                url: context + "auth/product/selectiveProduct?" + param
+            })
+        });
+    });
+</script>
+</body>
+</html>

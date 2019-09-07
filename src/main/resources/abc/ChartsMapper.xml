@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wunshine.myo2o.mapper.ChartsMapper">
+
+    <select id="getTopProduct" parameterType="map" resultType="map">
+        select product_name , sum(product_quantity) total_count
+        from tb_ordel_detail
+        <where>
+            <choose>
+                <when test="startTime != null and startTime !='' and endTime != null and endTime !=''">
+                    create_time between startTime and endTime
+                </when>
+                <when test="month != null and month != ''">
+                    date_format(create_time,'%Y-%m') = #{month}
+                </when>
+            </choose>
+        </where>
+            group by product_name
+            order by SUM(product_quantity) desc limit 5
+    </select>
+</mapper>
